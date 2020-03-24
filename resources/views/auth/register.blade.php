@@ -15,7 +15,7 @@
                 @csrf
                 <div class="md-form">
                   <label for="name">ユーザー名</label>
-                  <input class="form-control" type="text" id="name" name="name" required value="{{ old('name') }}">
+                  <input class="form-control" type="text" id="name" name="name" required value="{{ old('name') }}srf>
                   <small>英数字3〜16文字（登録後の変更はできません）</small>
                 </div>
                 <div class="md-form">
