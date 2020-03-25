@@ -10,6 +10,6 @@ class Article extends Model
 {
     public function user(): BelongsTo
     {
-        return $this->belingsTo('App\User');
+        return $this->belongsTo('App\User');
     }
 }
