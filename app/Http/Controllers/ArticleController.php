@@ -38,4 +38,11 @@ class ArticleController extends Controller
         $article->fill($request->all())->save();
         return redirect()->route('articles.index');
     }
+
+    public function destroy(Article $article)
+    {
+        $article->delete();
+        return redirect()->route('articles.index');
+    }
+
 }
