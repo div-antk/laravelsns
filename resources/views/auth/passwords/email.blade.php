@@ -14,7 +14,7 @@
             @include('error_card_list')
 
             @if (session('status'))
-              <div class="dard-text alert alert-success">
+              <div class="card-text alert alert-success">
                 {{ session('status') }}
               </div>
             @endif
