@@ -20,11 +20,11 @@ class Article extends Model
         return $this->belongsTo('App\User');
     }
 
-    public function likes(): BelomgsToMany
+    public function likes(): BelongsToMany
     {
         // 第一引数には関連するモデルの名前、第二引数には中間テーブル名
         // likesテーブルにはcreated_at、update_atがあるのでwithTimestampsを付ける
-        return $this->belingsToMany('App\User', 'likes')->withTimestamps();
+        return $this->belongsToMany('App\User', 'likes')->withTimestamps();
     }
 
     // あるユーザーがいいね済みかどうかを判定するメソッド
