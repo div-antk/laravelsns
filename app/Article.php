@@ -27,12 +27,18 @@ class Article extends Model
         return $this->belingsToMany('App\User', 'likes')->withTimestamps();
     }
 
+    // あるユーザーがいいね済みかどうかを判定するメソッド
     public function isLikedBy(?User $user): bool
     {
         return $user
             // nullableで引数がnullであることも許容する
             // 三項演算子で$userがnullかどうかで処理を分ける
-            // nullであればfalseを返す
+            //   nullであればfalseを返す
+            // countメソッドによって、いいねをしたユーザーの中に引数として渡された$userがいれば
+            // 1かそれより大きい数値が返る
+            //   いなければ0が返る
+            // ひとつの記事に複数回いいねができないため、2以上の数値が返ることはない
             ? (bool)$this->likes->where('id', $user->id)->count()
+            : false;
     }
 }
