@@ -69,6 +69,12 @@
           {{-- :initial-is-liked-by は v-bind:initial-is-liked-by の省略形 --}}
           {{-- @jsonを使うことで結果を文字列ではなく値としてVueコンポーネントに渡している --}}
           :initial-is-liked-by='@json($article->isLikedBy(Auth::user()))'
+          {{-- いいね数であるcount-likesを、Vueコンポーネントのプロパティに渡す --}}
+          :initial-count-likes='@json($article->count_likes)'
+          {{-- プロパティauthorizedを定義してユーザーがログイン中かどうかをtrueかfalseで渡す --}}
+          :authorized='@json(Auth::check())'
+          {{-- プロパティendpointを定義してroute関数で取得したURLを渡す --}}
+          endpoint="{{ route('articles.like', ['article' => $article]) }}"
           >
         </article-like>
       </div>
