@@ -8,7 +8,9 @@
         :class="{'red-text':this.isLikedBy}"
       />
     </button>
-    10
+    <!-- Bladeから渡されたいいね数が入ったプロパティ initialCountLikes を一旦セットする -->
+    <!-- 数を増減させるため initialCountLikes は直接使わない -->
+    {{ countLikes }}
   </div>
 </template>
 
@@ -19,10 +21,15 @@
         type: Boolean,
         default: false,
       },
+      initialCountLikes: {
+        type: Number,
+        default: 0,
+      },
     },
     data() {
       return {
         isLikedBy: this.initialIsLikedBy,
+        countLikes: this.initialCountLikes,
       }
     },
   }
