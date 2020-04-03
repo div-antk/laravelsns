@@ -26,13 +26,13 @@
         type: Number,
         default: 0,
       },
-    },
-    authotized: {
-      type: Boolean,
-      default: false,
-    },
-    endpoint: {
-      type: String,
+      authorized: {
+        type: Boolean,
+        default: false,
+      },
+      endpoint: {
+        type: String,
+      },
     },
     data() {
       return {
