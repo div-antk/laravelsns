@@ -8,7 +8,9 @@
 <div class="form-group">
   {{-- vueのInitialTagsプロパティにタグ情報の入った$tagNamesの値を渡す --}}
   <article-tags-input
+  {{-- ?? [] としているのはnullである場合の考慮 --}}
   :initial-tags='@json($tagNames ?? [])'
+  :autocomplete-items='@json($allTagNames ?? [])'
   >
   </article-tags-input>
 </div>
