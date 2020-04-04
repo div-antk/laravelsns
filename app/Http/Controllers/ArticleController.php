@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Article;
+use App\Tag;
 use App\Http\Requests\ArticleRequest;
 use Illuminate\Http\Request;
 
@@ -22,7 +23,13 @@ class ArticleController extends Controller
 
     public function create()
     {
-        return view('articles.create');
+        $allTagNames = Tag::all()->map(function ($tag) {
+            return ['text' => $tag->name];
+        });
+
+        return view('articles.create', [
+            'allTagNames' => $allTagNames,
+        ]);
     }
 
     public function store(ArticleRequest $request, Article $article)
@@ -30,17 +37,49 @@ class ArticleController extends Controller
         $article->fill($request->all());
         $article->user_id = $request->user()->id;
         $article->save();
+        // 渡されたクロージャの第一引数にはコレクションの値
+            // 第二引数にはコレクションのキーが入っている
+        // 繰り返し処理の1回目では、例えば['USA', 'France']であれば
+        //     第一引数はUSA、第二引数には0（2回目の繰り返しでは1）
+        $request->tags->each(function ($tagName) use ($article) {
+            // すでにtagsテーブルに存在するかそうでないかを判断
+            $tag = Tag::firstOrCreate(['name' => $tagName]);
+            $article->tags()->attach($tag);
+        });
         return redirect()->route('articles.index');
     }
 
     public function edit(Article $article)
     {
-        return view('articles.edit', ['article' => $article]);
+        // タグ名に対してtextというキーが付いている必要があるため
+        //     mapメソッドで連想配列にする
+        $tagNames = $article->tags->map(function ($tag) {
+            return ['text' => $tag->name];
+        });
+
+        // 自動補完機能のため
+        $allTagNames = Tag::all()->map(function ($tag) {
+            return ['text' => $tag->name];
+        });
+
+        return view('articles.edit', [
+            'article' => $article,
+            // ブレードに$tagNamesという変数で渡す
+            'tagNames' => $tagNames,
+            'allTagNames' => $allTagNames,
+        ]);
     }
 
     public function update(ArticleRequest $request, Article $article)
     {
         $article->fill($request->all())->save();
+
+        $article->tags()->detach();
+        $request->tags->each(function ($tagName) use ($article) {
+            $tag = Tag::firstOrCreate(['name' => $tagName]);
+            $article->tags()->attach($tag);
+        });
+
         return redirect()->route('articles.index');
     }
 

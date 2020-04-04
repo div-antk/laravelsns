@@ -7,6 +7,7 @@
     </div>
 
   @if( Auth::id() === $article->user_id )
+    
     <!-- dropdown -->
       <div class="ml-auto card-text">
         <div class="dropdown">
@@ -50,9 +51,11 @@
         </div>
       </div>
       <!-- modal -->
+
     @endif
 
   </div>
+
   <div class="card-body pt-0">
     <h3 class="h4 card-title">
       <a class="text-dark" href="{{ route('articles.show', ['article' => $article]) }}">
@@ -79,5 +82,21 @@
         </article-like>
       </div>
     </div>
+    @foreach($article->tags as $tag)
+      {{-- $loop関数は@foreachの中で使える変数 --}}
+      {{-- 最初の一回だけ行われる処理 --}}
+      @if($loop->first)
+        <div class="card-body pt-0 pd-4 pl-3">
+          <div class="card-text line-height">
+      @endif
+            <a href="{{ route('tags.show', ['name' => $tag->name]) }}" class="border p-1 mr-1 mt-1 text-muted">
+              {{ $tag->hashtag }}
+            </a>
+      {{-- 最後だけ行われる処理 --}}
+      @if($loop->last)
+          </div>
+        </div>
+      @endif
+    @endforeach
   </div>
 </div>

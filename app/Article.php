@@ -48,4 +48,10 @@ class Article extends Model
         // countメソッドでコレクションの要素数を数える
         return $this->likes->count();
     }
+
+    // tagテーブルへの多対多のリレーションを定義
+    public function tags(): BelongsToMany
+    {
+        return $this->belongsToMany('App\Tag')->withTimestamps();
+    }
 }
