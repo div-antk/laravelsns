@@ -79,5 +79,21 @@
         </article-like>
       </div>
     </div>
+    @foreach($article->tags as $tag)
+      {{-- $loop関数は@foreachの中で使える変数 --}}
+      {{-- 最初の一回だけ行われる処理 --}}
+      @if($loop->first)
+        <div class="card-body pt-0 pd-4 pl-3">
+          <div class="card-text line-height">
+      @endif
+            <a href="" class="border p-1 mr-1 mt-1 text-muted">
+              {{ $tag->name }}
+            </a>
+      {{-- 最後だけ行われる処理 --}}
+      @if($loop->last)
+          </div>
+        </div>
+      @endif
+    @endforeach
   </div>
 </div>

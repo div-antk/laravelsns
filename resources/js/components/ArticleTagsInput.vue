@@ -55,7 +55,7 @@ export default {
 </script>
 <style lang="css">
   .vue-tags-input .ti-tag {
-    background: trancsparent;
+    background: transparent;
     border: 1px solid #747373;
     color: #747373;
     margin-right: 4px;
