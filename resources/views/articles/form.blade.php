@@ -6,7 +6,9 @@
 
 {{-- タグ機能 --}}
 <div class="form-group">
+  {{-- vueのInitialTagsプロパティにタグ情報の入った$tagNamesの値を渡す --}}
   <article-tags-input
+  :initial-tags='@json($tagNames ?? [])'
   >
   </article-tags-input>
 </div>

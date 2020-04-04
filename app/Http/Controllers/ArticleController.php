@@ -31,12 +31,11 @@ class ArticleController extends Controller
         $article->fill($request->all());
         $article->user_id = $request->user()->id;
         $article->save();
-        return redirect()->route('articles.index');
         // 渡されたクロージャの第一引数にはコレクションの値
             // 第二引数にはコレクションのキーが入っている
         // 繰り返し処理の1回目では、例えば['USA', 'France']であれば
         //     第一引数はUSA、第二引数には0（2回目の繰り返しでは1）
-        $request->tag->each(function ($tagName) use ($article) {
+        $request->tags->each(function ($tagName) use ($article) {
             // すでにtagsテーブルに存在するかそうでないかを判断
             $tag = Tag::firstOrCreate(['name' => $tagName]);
             $article->tags()->attach($tag);
@@ -46,7 +45,16 @@ class ArticleController extends Controller
 
     public function edit(Article $article)
     {
-        return view('articles.edit', ['article' => $article]);
+        // タグ名に対してtextというキーが付いている必要があるため
+        //     mapメソッドで連想配列にする
+        $tagNames = $article->tags->map(function ($tag) {
+            return ['text' => $tag->name];
+        });
+        return view('articles.edit', [
+            'article' => $article,
+            // ブレードに$tagNamesという変数で渡す
+            'tagNames' => $tagNames,
+        ]);
     }
 
     public function update(ArticleRequest $request, Article $article)

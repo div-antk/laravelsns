@@ -22,10 +22,18 @@ export default {
   components: {
     VueTagsInput,
   },
+  props: {
+    // Bladeから渡されたタグ情報を受け取る
+    initialTags: {
+      type: Array,
+      default: [],
+    },
+  },
   data() {
     return {
       tag: '',
-      tags: [],
+      // initialTagsの値のデータをtagsの初期値としてセット
+      tags: this.initialTags,
       autocompleteItems: [{
         text: 'Spain',
       }, {
