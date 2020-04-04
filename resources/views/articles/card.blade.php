@@ -55,7 +55,7 @@
     @endif
 
   </div>
-  
+
   <div class="card-body pt-0">
     <h3 class="h4 card-title">
       <a class="text-dark" href="{{ route('articles.show', ['article' => $article]) }}">
@@ -90,7 +90,7 @@
           <div class="card-text line-height">
       @endif
             <a href="" class="border p-1 mr-1 mt-1 text-muted">
-              {{ $tag->name }}
+              {{ $tag->hashtag }}
             </a>
       {{-- 最後だけ行われる処理 --}}
       @if($loop->last)
