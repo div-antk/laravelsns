@@ -42,7 +42,7 @@ export default {
   },
 };
 </script>
-<style lang="css" scoped>
+<style lang="css">
   .vue-tags-input .ti-tag {
     background: trancsparent;
     border: 1px solid #747373;
