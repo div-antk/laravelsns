@@ -65,38 +65,38 @@
     <div class="card-text">
       {!! nl2br(e( $article->body )) !!}
     </div>
-    
-    <div class="card-body pt-0 pb-2 pl-3">
-      <div class="card-text">
-        <article-like
-          {{-- :initial-is-liked-by は v-bind:initial-is-liked-by の省略形 --}}
-          {{-- @jsonを使うことで結果を文字列ではなく値としてVueコンポーネントに渡している --}}
-          :initial-is-liked-by='@json($article->isLikedBy(Auth::user()))'
-          {{-- いいね数であるcount-likesを、Vueコンポーネントのプロパティに渡す --}}
-          :initial-count-likes='@json($article->count_likes)'
-          {{-- プロパティauthorizedを定義してユーザーがログイン中かどうかをtrueかfalseで渡す --}}
-          :authorized='@json(Auth::check())'
-          {{-- プロパティendpointを定義してroute関数で取得したURLを渡す --}}
-          endpoint="{{ route('articles.like', ['article' => $article]) }}"
-          >
-        </article-like>
-      </div>
-    </div>
-    @foreach($article->tags as $tag)
-      {{-- $loop関数は@foreachの中で使える変数 --}}
-      {{-- 最初の一回だけ行われる処理 --}}
-      @if($loop->first)
-        <div class="card-body pt-0 pd-4 pl-3">
-          <div class="card-text line-height">
-      @endif
-            <a href="{{ route('tags.show', ['name' => $tag->name]) }}" class="border p-1 mr-1 mt-1 text-muted">
-              {{ $tag->hashtag }}
-            </a>
-      {{-- 最後だけ行われる処理 --}}
-      @if($loop->last)
-          </div>
-        </div>
-      @endif
-    @endforeach
   </div>
+    
+  <div class="card-body pt-0 pb-2 pl-3">
+    <div class="card-text">
+      <article-like
+        {{-- :initial-is-liked-by は v-bind:initial-is-liked-by の省略形 --}}
+        {{-- @jsonを使うことで結果を文字列ではなく値としてVueコンポーネントに渡している --}}
+        :initial-is-liked-by='@json($article->isLikedBy(Auth::user()))'
+        {{-- いいね数であるcount-likesを、Vueコンポーネントのプロパティに渡す --}}
+        :initial-count-likes='@json($article->count_likes)'
+        {{-- プロパティauthorizedを定義してユーザーがログイン中かどうかをtrueかfalseで渡す --}}
+        :authorized='@json(Auth::check())'
+        {{-- プロパティendpointを定義してroute関数で取得したURLを渡す --}}
+        endpoint="{{ route('articles.like', ['article' => $article]) }}"
+        >
+      </article-like>
+    </div>
+  </div>
+  @foreach($article->tags as $tag)
+    {{-- $loop関数は@foreachの中で使える変数 --}}
+    {{-- 最初の一回だけ行われる処理 --}}
+    @if($loop->first)
+      <div class="card-body pt-0 pd-4 pl-3">
+        <div class="card-text line-height">
+    @endif
+          <a href="{{ route('tags.show', ['name' => $tag->name]) }}" class="border p-1 mr-1 mt-1 text-muted">
+            {{ $tag->hashtag }}
+          </a>
+    {{-- 最後だけ行われる処理 --}}
+    @if($loop->last)
+        </div>
+      </div>
+    @endif
+  @endforeach
 </div>
