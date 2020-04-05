@@ -31,7 +31,7 @@ class UserController extends Controller
         if ($user->id === $request->user()->id)
         {
             // 自分自身をフォローしようとするとエラーのHTTPステータスコードをレスポンスする
-            return abort('404', 'Cannnot follow yourself.');
+            return abort('404', 'Cannot follow yourself.');
         }
 
         // followingメソッドは多対多のリレーション（BelongsToManyクラスのインスタンス）が返ることを想定
@@ -51,7 +51,7 @@ class UserController extends Controller
 
         if ($user->id === $request->user()->id)
         {
-            return abort('404', 'Cannnot follow yourself.');
+            return abort('404', 'Cannot follow yourself.');
         }
 
         $request->user()->followings()->detach($user);
