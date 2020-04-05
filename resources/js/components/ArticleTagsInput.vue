@@ -5,11 +5,13 @@
       name="tags"
       :value="tagsJson"
     >
+    <!-- add-on-key タグ入力の際にエンターキーとスペースキーで確定させる -->
     <vue-tags-input
       v-model="tag"
       :tags="tags"
       placeholder="タグを5個まで入力できます"
       :autocomplete-items="filteredItems"
+      :add-on-key="[13, 32]"
       @tags-changed="newTags => tags = newTags"
     />
   </div>
