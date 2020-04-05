@@ -19,4 +19,43 @@ class UserController extends Controller
             'user' => $user,
         ]);
     }
+
+    // フォロー
+    // 引数 $user にはURLのnameの部分が渡ってくる
+    public function follow(Request $request, string $name)
+    {
+        // 条件に一致するユーザーモデルをコレクションとして最初の1件を取得
+            // $user にはフォローされる側のユーザーのユーザーモデルが代入される
+        $user = User::where('name', $name)->first();
+
+        if ($user->id === $request->user()->id)
+        {
+            // 自分自身をフォローしようとするとエラーのHTTPステータスコードをレスポンスする
+            return abort('404', 'Cannnot follow yourself.');
+        }
+
+        // followingメソッドは多対多のリレーション（BelongsToManyクラスのインスタンス）が返ることを想定
+        // detachしてからattachしているのは複数回重ねてフォローできないようにするため
+        $request->user()->followings()->detach($user);
+        $request->user()->followings()->attach($user);
+
+        // コントローラで配列や連想配列を返すと、JSON形式に変換されてレスポンスされる
+        // どのユーザーへのフォローが成功したかがわかるようにユーザーの名前を返す
+        return ['name' => $name];
+    }
+
+    // フォロー解除
+    public function unfollow(Request $request, string $name)
+    {
+        $user = User::where('name', $name)->first();
+
+        if ($user->id === $request->user()->id)
+        {
+            return abort('404', 'Cannnot follow yourself.');
+        }
+
+        $request->user()->followings()->detach($user);
+
+        return ['name' => $name];
+    }
 }

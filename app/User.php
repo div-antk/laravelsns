@@ -5,7 +5,7 @@ namespace App;
 use App\Mail\BareMail;
 use App\Notifications\PasswordResetNotification;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
-use Illuminate\Databese\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
@@ -49,7 +49,16 @@ class User extends Authenticatable
     // リレーション（多対多）
     public function followers(): BelongsToMany
     {
-        return $this->belongsToMany('App\User', 'follows', 'followee_id', 'follower_id')->withTimeStamps();
+        return $this->belongsToMany('App\User', 'follows', 'followee_id', 'follower_id')->withTimestamps();
+    }
+
+
+    // これからフォローするユーザー、あるいはフォロー中のユーザーのモデルにアクセス可能にするためのリレーションメソッド
+    public function followings(): BelongsToMany
+    {
+        // リレーション元のusersテーブルのidは、中間テーブルのfollower_idと紐付く
+        // リレーション先のusersテーブルのidは、中間テーブルのfollowee_idと紐付く
+        return $this->belongsToMany('App\User', 'follows', 'followee_id', 'follower_id')->withTimestamps();
     }
 
     // あるユーザーをフォロー中かどうかを判定するメソッド

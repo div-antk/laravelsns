@@ -3,6 +3,7 @@
     <button
       class="btn-sm shadow-none border border-primary p-2"
       :class="buttonColor"
+      @click="clickFollow"
     >
       <i
         class="mr-1"
@@ -14,13 +15,27 @@
 </template>
 
 <script>
-  // isFollowedByの状態に応じて、ボタンの色、アイコン、テキストを変える
   export default {
+    props: {
+      initialIsFollowedBy: {
+        type: Boolean,
+        default: false,
+      },
+      authorized: {
+        type: Boolean,
+        default: false,
+      },
+      endpoint: {
+        type: String,
+      },
+    },
     data() {
       return {
-        isFollowedBy: false,
+        // プロパティ initialIsFollowedBy に渡された値をそのまま isFollowedBy にセットする
+        isFollowedBy: this.initialIsFollowedBy,
       }
     },
+    // isFollowedByの状態に応じて、ボタンの色、アイコン、テキストを変える
     computed: {
       buttonColor() {
         return this.isFollowedBy
@@ -38,5 +53,32 @@
           : 'フォロー'
       },
     },
+
+    methods: {
+
+      // クリックされたときに実行
+      clickFollow() {
+        if (!this.authorized) {
+          alert('フォロー機能はログイン中のみ使用できます')
+          return
+        }
+
+        this.isFollowedBy
+          ? this.unfollow()
+          : this.follow()
+      },
+      async follow() {
+        // this.endpoint、つまり users/{name}/followに対してPUTメソッドでリクエスト
+        const response = await axios.put(this.endpoint)
+
+        this.isFollowedBy = true
+      },
+      async unfollow() {
+        // 同上に対してDELETEメソッドでリクエスト
+        const response = await axios.delete(this.endpoint)
+
+        this.isFollowedBy = false
+      },
+    }
   }
 </script>>
