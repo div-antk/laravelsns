@@ -19,10 +19,16 @@
           @if( Auth::id() !== $user->id )
             <follow-button
               class="ml-auto"
+              {{-- @jsonを使うことで $user->isFollowedBy(Auth::user()) の結果を文字列ではなく値で返す --}}
+              :initial-is-followed-by='@json($user->isFollowedBy(Auth::user()))'
+              {{-- フォローはログイン中のみできるため、Authのcheckメソッドでtrueかfalseで返す --}}
+              :authorized='@json(Auth::check())'
+              {{-- route関数で取得したURLを文字列で渡す --}}
+              endpoint="{{ route('users.follow', ['name' => $user->name] )}}"
             >
             </follow-button>
           @endif
-          
+
         </div>
         <h2 class="h5 card-title m-0">
           <a href="{{ route('users.show', ['name' => $user->name]) }}" class="text-dark">
@@ -33,10 +39,10 @@
       <div class="card-body">
         <div class="card-text">
           <a href="" class="text-muted">
-            10 フォロー
+            {{ $user->count_followings }} フォロー
           </a>
           <a href="" class="text-muted">
-            10 フォロー
+            {{ $user->count_followers }}  フォロー
           </a>
         </div>
       </div>
