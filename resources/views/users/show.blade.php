@@ -36,6 +36,8 @@
           </a>
         </h2>
       </div>
+
+      {{-- フォロー、フォロワー数 --}}
       <div class="card-body">
         <div class="card-text">
           <a href="" class="text-muted">
@@ -47,5 +49,24 @@
         </div>
       </div>
     </div>
+
+    {{-- 投稿した記事といいねした記事を切り替えるタブ --}}
+    <ul class="nav nav-tabs nav-justified mt-3">
+      <li class="nav-item">
+        <a class="nav-link text-muted active"
+          href="{{ route('users.show', ['name' => $user->name] )}}">
+          記事
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link text-muted"
+          href="">
+          いいね
+        </a>
+      </li>
+    </ul>
+    @foreach ($articles as $article)
+      @include('articles.card')
+    @endforeach
   </div>
 @endsection
