@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 
+use Laravel\Socialite\Facades\Socialite;
+
 class LoginController extends Controller
 {
     /*
@@ -36,5 +38,12 @@ class LoginController extends Controller
     public function __construct()
     {
         $this->middleware('guest')->except('logout');
+    }
+
+    // 外部サービスのログイン用
+        // driverにサービス名を渡し、redirectでそのサービス画面へリダイレクトさせる
+    public function redirectToProvider(string $provider)
+    {
+        return Socialite::driver($provider)->redirect();
     }
 }

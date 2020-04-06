@@ -4,10 +4,10 @@
 
 Auth::routes();
 
-// Googleでログイン用のルーティング
+// 他サービスでのログイン用のルーティング
   // {provider}の部分は、利用する他のサービスの名前を入れることを想定している。Googleであれば{google}
 Route::prefix('login')->name('login.')->group(function () {
-  ROute::get('/{provider}', 'Auth\LoginController@redirectToProvider')->name('{provider}');
+  Route::get('/{provider}', 'Auth\LoginController@redirectToProvider')->name('{provider}');
 });
 
 Route::get('/', 'ArticleController@index')->name('articles.index');
