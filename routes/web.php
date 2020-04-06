@@ -21,7 +21,7 @@ Route::prefix('users')->name('users.')->group(function () {
   Route::get('/{name}', 'UserController@show')->name('show');
   // ユーザーがいいねした記事一覧のルーティング
     // 未ログインユーザーでも参照可能にするためmiddlewareの外側
-  Route::get('/{name}/likes', 'UserControllwe@likes')->name('likes');
+  Route::get('/{name}/likes', 'UserController@likes')->name('likes');
   Route::middleware('auth')->group(function () {
     Route::put('/{name}/follow', 'UserController@follow')->name('follow');
     Route::delete('/{name}/follow', 'UserController@unfollow')->name('unfollow');
