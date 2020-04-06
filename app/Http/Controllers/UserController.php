@@ -24,6 +24,19 @@ class UserController extends Controller
         ]);
     }
 
+    public function likes(string $name)
+    {
+        $user = User::where('name', $name)->first();
+
+        // ユーザーがいいねした記事モデルをコレクションで所得して投稿日の降順でソート
+        $articles = $user->likes->sortByDesc('created_at');
+
+        return view('users.likes', [
+            'user' => $user,
+            'articles' => $articles,
+        ]);
+    }
+
     // フォロー
     // 引数 $user にはURLのnameの部分が渡ってくる
     public function follow(Request $request, string $name)

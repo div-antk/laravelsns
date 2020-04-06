@@ -68,6 +68,12 @@ class User extends Authenticatable
         return $this->belongsToMany('App\User', 'follows', 'follower_id', 'followee_id')->withTimestamps();
     }
 
+    // 『いいね』におけるユーザーと記事のリレーション（多対多）
+    public function likes(): BelongsToMany
+    {
+        return $this->belongsToMany('App\Article', 'likes')->withTimestamps();
+    }
+
     // あるユーザーをフォロー中かどうかを判定するメソッド
     public function isFollowedBy(?User $user): bool
     {
