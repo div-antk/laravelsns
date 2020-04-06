@@ -14,9 +14,26 @@ class UserController extends Controller
         // ルーティングに定義したURL /users/{name} の部分が渡る
         $user = User::where('name', $name)->first();
 
+        // ユーザーの投稿した記事モデルをコレクションで所得して投稿日の降順でソート
+        $articles = $user->articles->sortByDesc('created_at');
+
         // ユーザーページのBladeを表示し、ユーザーモデルの入った変数 $user を渡す
         return view('users.show', [
             'user' => $user,
+            'articles' => $articles,
+        ]);
+    }
+
+    public function likes(string $name)
+    {
+        $user = User::where('name', $name)->first();
+
+        // ユーザーがいいねした記事モデルをコレクションで所得して投稿日の降順でソート
+        $articles = $user->likes->sortByDesc('created_at');
+
+        return view('users.likes', [
+            'user' => $user,
+            'articles' => $articles,
         ]);
     }
 
