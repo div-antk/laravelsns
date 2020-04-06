@@ -8,23 +8,13 @@
   @include('nav')
   <div class="container">
     
+    {{-- ユーザーページ --}}
     @include('users.user')
 
-    {{-- 投稿した記事といいねした記事を切り替えるタブ --}}
-    <ul class="nav nav-tabs nav-justified mt-3">
-      <li class="nav-item">
-        <a class="nav-link text-muted active"
-          href="{{ route('users.show', ['name' => $user->name] )}}">
-          記事
-        </a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link text-muted"
-          href="{{ route('users.likes', ['name' => $user->name] )}}">
-          いいね
-        </a>
-      </li>
-    </ul>
+    {{-- 記事一覧といいねした記事一覧のタブ --}}
+      {{-- 三項演算子で使うための変数を渡す --}}
+    @include('users.tabs', ['hasArticles' => true, 'hasLikes' => false])
+
     @foreach ($articles as $article)
       @include('articles.card')
     @endforeach
