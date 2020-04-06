@@ -51,7 +51,7 @@ class UserController extends Controller
     }
 
     // ユーザーのフォロワー一覧
-    public function follower(string $name)
+    public function followers(string $name)
     {
         $user = User::where('name', $name)->first();
 
