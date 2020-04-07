@@ -8,6 +8,7 @@ Auth::routes();
   // {provider}の部分は、利用する他のサービスの名前を入れることを想定している。Googleであれば{google}
 Route::prefix('login')->name('login.')->group(function () {
   Route::get('/{provider}', 'Auth\LoginController@redirectToProvider')->name('{provider}');
+  Route::get('/{provider}/callback', 'Auth\LoginController@handleProviderCallBack')->name('{provider}.callback');
 });
 
 Route::get('/', 'ArticleController@index')->name('articles.index');
