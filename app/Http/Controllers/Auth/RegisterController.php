@@ -53,6 +53,7 @@ class RegisterController extends Controller
      */
     protected function validator(array $data)
     {
+        // バリデーション
         return Validator::make($data, [
             'name' => ['required', 'string', 'alpha_num', 'min:3', 'max:16', 'unique:users'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
@@ -91,5 +92,37 @@ class RegisterController extends Controller
             // Googleから発行されたトークンが返る
             'token' => $providerUser->token,
         ]);
+    }
+
+    public function registerProviderUser(Request $request, string $provider)
+    {
+        // 実際にユーザー登録に使用するメールアドレスはGoogleのAPIから再取得するものであるため、バリデーションは行わない
+        $request->validate([
+            'name' => ['required', 'string', 'alpha_num', 'min:3', 'max:16', 'unique:users'],
+            'token' => ['required', 'string'],
+        ]);
+
+        // Googleから発行済のトークンの値を取得して代入
+        $token = $request->token;
+
+        // useFromTokenメソッドで、Googleから発行済のトークンを使い
+        //     GoogleのAPIに再度ユーザー情報の問い合わせを行い、取得したユーザー情報を代入
+        $providerUser = Socialite::driver($provider)->userFromToken($token);
+
+        // ユーザーモデルのcreateメソッドを使い、ユーザーモデルのインスタンスを作成
+        $user = User::create ([
+            // 登録画面に入力されたユーザー名
+            'name' => $request->name,
+            // Googleから取得したメールアドレス
+            'email' => $providerUser->getEmail(),
+            // パスワードは登録不要
+            'password' => null,
+        ]);
+
+        // ユーザー登録後にログイン済み状態にし、記事一覧画面にリダイレクト
+        $this->guard()->login($user, true);
+
+        return $this->registered($request, $user)
+            ?: redirect($this->redirectPath());
     }
 }

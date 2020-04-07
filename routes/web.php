@@ -14,6 +14,7 @@ Route::prefix('login')->name('login.')->group(function () {
 // 未登録ユーザーの他サービスでのログイン用ルーティング
 Route::prefix('register')->name('register.')->group(function () {
   Route::get('/{provider}', 'Auth\RegisterController@showProviderUserRegistrationForm')->name('{provider}');
+  Route::post('/{provider}', 'Auth\RegisterController@registerProviderUser');
 });
 
 Route::get('/', 'ArticleController@index')->name('articles.index');

@@ -13,8 +13,9 @@
 
             @include('error_card_list')
             <div class="card-text">
-              <form method="POST" 
-                action="">
+              <form method="POST"
+                {{-- Laravelのroute関数を使って、localhost/register/google にPOST送信 --}}
+                action="{{ route('register.{provider}', ['provider' => $provider]) }}">
                 @csrf
 
                 {{-- valueに渡されたトークンを設定 --}}
