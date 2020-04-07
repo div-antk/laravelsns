@@ -3,6 +3,20 @@
 // ルーティングの定義
 
 Auth::routes();
+
+// 他サービスでのログイン用のルーティング
+  // {provider}の部分は、利用する他のサービスの名前を入れることを想定している。Googleであれば{google}
+Route::prefix('login')->name('login.')->group(function () {
+  Route::get('/{provider}', 'Auth\LoginController@redirectToProvider')->name('{provider}');
+  Route::get('/{provider}/callback', 'Auth\LoginController@handleProviderCallBack')->name('{provider}.callback');
+});
+
+// 未登録ユーザーの他サービスでのログイン用ルーティング
+Route::prefix('register')->name('register.')->group(function () {
+  Route::get('/{provider}', 'Auth\RegisterController@showProviderUserRegistrationForm')->name('{provider}');
+  Route::post('/{provider}', 'Auth\RegisterController@registerProviderUser');
+});
+
 Route::get('/', 'ArticleController@index')->name('articles.index');
 Route::resource('/articles', 'ArticleController')->except(['index', 'show'])->middleware('auth');
 Route::resource('/articles', 'ArticleController')->only(['show']);
