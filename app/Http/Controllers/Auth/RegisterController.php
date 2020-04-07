@@ -1,13 +1,17 @@
 <?php
 
+// ユーザー登録用
+
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Providers\RouteServiceProvider;
 use App\User;
 use Illuminate\Foundation\Auth\RegistersUsers;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
+use Laravel\Socialite\Facades\Socialite;
 
 class RegisterController extends Controller
 {
@@ -68,6 +72,24 @@ class RegisterController extends Controller
             'name' => $data['name'],
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
+        ]);
+    }
+
+    public function showProviderUserRegistrationForm(Request $request, string $provider)
+    {
+        $token = $request->token;
+
+        // useFromTokenメソッドで、Googleから発行済のトークンを使い
+        //     GoogleのAPIに再度ユーザー情報の問い合わせを行い、取得したユーザー情報を代入
+        $providerUser = Socialite::driver($provider)->userFromToken($token);
+
+        return view('auth.social_register', [
+            // プロバイダー名（Google）
+            'provider' => $provider,
+            // Googleから取得したメールアドレス
+            'email' => $providerUser->getEmail(),
+            // Googleから発行されたトークンが返る
+            'token' => $providerUser->token,
         ]);
     }
 }

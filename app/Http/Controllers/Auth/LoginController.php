@@ -66,5 +66,14 @@ class LoginController extends Controller
             $this->guard()->login($user, true);
             return $this->sendLoginResponse($request);
         }
+            // 早期return。ifの条件に該当しなかったとき
+            return redirect()->route('register.{provider}', [
+                // プロバイダー名（Google）
+                'provider' => $provider,
+                // Googleから取得したメールアドレス
+                'email' => $providerUser->getEmail(),
+                // Googleから発行されたトークンが返る
+                'token' => $providerUser->token,
+            ]);
     }
 }
