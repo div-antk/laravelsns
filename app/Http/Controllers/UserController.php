@@ -12,7 +12,10 @@ class UserController extends Controller
     public function show(string $name)
     {
         // ルーティングに定義したURL /users/{name} の部分が渡る
-        $user = User::where('name', $name)->first();
+        $user = User::where('name', $name)->first()
+
+            // N+1問題の解決
+            ->load(['articles.user', 'articles.likes', 'articles.tags']);
 
         // ユーザーの投稿した記事モデルをコレクションで所得して投稿日の降順でソート
         $articles = $user->articles->sortByDesc('created_at');
@@ -26,7 +29,10 @@ class UserController extends Controller
 
     public function likes(string $name)
     {
-        $user = User::where('name', $name)->first();
+        $user = User::where('name', $name)->first()
+
+            // N+1問題の解決
+            ->load(['likes.user', 'likes.likes', 'likes.tags']);
 
         // ユーザーがいいねした記事モデルをコレクションで所得して投稿日の降順でソート
         $articles = $user->likes->sortByDesc('created_at');
@@ -40,7 +46,10 @@ class UserController extends Controller
     // ユーザーのフォロー一覧
     public function followings(string $name)
     {
-        $user = User::where('name', $name)->first();
+        $user = User::where('name', $name)->first()
+
+            // N+1問題の解決
+            ->load('followings.followers');
 
         $followings = $user->followings->sortByDesc('created_at');
 
@@ -53,7 +62,10 @@ class UserController extends Controller
     // ユーザーのフォロワー一覧
     public function followers(string $name)
     {
-        $user = User::where('name', $name)->first();
+        $user = User::where('name', $name)->first()
+
+            // N+1問題の解決
+            ->load('followers.followers');
 
         $followers = $user->followers->sortByDesc('created_at');
 
