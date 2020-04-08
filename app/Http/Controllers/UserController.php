@@ -29,7 +29,10 @@ class UserController extends Controller
 
     public function likes(string $name)
     {
-        $user = User::where('name', $name)->first();
+        $user = User::where('name', $name)->first()
+
+            // N+1問題の解決
+            ->load(['likes.user', 'likes.likes', 'likes.tags']);
 
         // ユーザーがいいねした記事モデルをコレクションで所得して投稿日の降順でソート
         $articles = $user->likes->sortByDesc('created_at');
