@@ -12,7 +12,10 @@ class UserController extends Controller
     public function show(string $name)
     {
         // ルーティングに定義したURL /users/{name} の部分が渡る
-        $user = User::where('name', $name)->first();
+        $user = User::where('name', $name)->first()
+
+            // N+1問題の解決
+            ->load(['articles.user', 'articles.likes', 'articles.tags']);
 
         // ユーザーの投稿した記事モデルをコレクションで所得して投稿日の降順でソート
         $articles = $user->articles->sortByDesc('created_at');
