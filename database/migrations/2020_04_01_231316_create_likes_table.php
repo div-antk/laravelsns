@@ -16,8 +16,6 @@ class CreateLikesTable extends Migration
         Schema::create('like', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->bigInteger('user_id');
-            // likeテーブルのuser_idカラムは、userテーブルのidカラムを参照する
-            // いいねをしたユーザーがusersテーブルから削除されるとlikeテーブルに紐づくユーザーが削除される
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->bigInteger('article_id');
             $table->foreign('article_id')->references('id')->on('articles')->onDelete('cascade');

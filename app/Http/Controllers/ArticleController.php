@@ -21,7 +21,7 @@ class ArticleController extends Controller
             // ->load('user');
             
             // 複数のリレーションのEagerロード
-            ->load(['user', 'likes', 'tags']); 
+            ->load(['user', 'likes', 'tags']);
 
         return view('articles.index', ['articles' => $articles]);
     }
