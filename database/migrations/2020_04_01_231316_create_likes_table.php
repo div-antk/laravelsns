@@ -20,7 +20,7 @@ class CreateLikesTable extends Migration
             // いいねをしたユーザーがusersテーブルから削除されるとlikeテーブルに紐づくユーザーが削除される
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->bigInteger('article_id');
-            $table->foreign('article_id')->references('id')->on('articles')->OnDelete('cascade');
+            $table->foreign('article_id')->references('id')->on('articles')->onDelete('cascade');
             $table->timestamps();
         });
     }
